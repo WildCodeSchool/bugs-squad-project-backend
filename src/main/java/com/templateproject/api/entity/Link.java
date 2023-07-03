@@ -19,8 +19,8 @@ public class Link {
     @Transient
     private long collectionId;
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getId() {
+        return id;
     }
 
     public long getTitle() {

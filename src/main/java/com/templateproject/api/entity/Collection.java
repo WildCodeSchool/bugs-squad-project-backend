@@ -61,6 +61,4 @@ public class Collection {
     public void setLinks(List<Link> links) {
         this.links = links;
     }
-
-
 }
