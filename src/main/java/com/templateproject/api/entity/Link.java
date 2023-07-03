@@ -1,6 +1,7 @@
 package com.templateproject.api.entity;
 
 import jakarta.persistence.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 public class Link {
@@ -12,7 +13,11 @@ public class Link {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "collection_id")
+    @JsonIgnore
     private Collection collection;
+
+    @Transient
+    private long collectionId;
 
     public Long getId() {
         return id;
@@ -44,5 +49,9 @@ public class Link {
 
     public void setCollection(Collection collection) {
         this.collection = collection;
+    }
+
+    public long getCollectionId() {
+        return collection.getId();
     }
 }
