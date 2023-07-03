@@ -1,9 +1,8 @@
 package com.templateproject.api.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Collection {
@@ -15,6 +14,9 @@ public class Collection {
     private long description;
     private long color;
     private boolean isFavorite;
+
+    @OneToMany(mappedBy = "collection")
+    private List<Link> links;
 
     public Long getId() {
         return id;
@@ -54,5 +56,13 @@ public class Collection {
 
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
+    }
+
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<Link> links) {
+        this.links = links;
     }
 }
