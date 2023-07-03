@@ -10,9 +10,9 @@ public class Collection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private long title;
-    private long description;
-    private long color;
+    private String title;
+    private String description;
+    private String color;
     private boolean isFavorite;
 
     @OneToMany(mappedBy = "collection")
@@ -26,27 +26,27 @@ public class Collection {
         this.id = id;
     }
 
-    public long getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(long title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public long getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(long description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public long getColor() {
+    public String getColor() {
         return color;
     }
 
-    public void setColor(long color) {
+    public void setColor(String color) {
         this.color = color;
     }
 
