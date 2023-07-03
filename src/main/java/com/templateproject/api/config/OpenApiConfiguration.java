@@ -17,8 +17,8 @@ public class OpenApiConfiguration {
 
     private Info apiInfo() {
         return new Info()
-                .title("kit")
-                .description("DESCRIPTION OF YOUR API")
+                .title("K.I.T. API")
+                .description("API for K.I.T. project from BUGSSQUAD in 2023 @WildCodeSchool")
                 .version("1.0")
                 .contact(apiContact())
                 .license(apiLicence());
@@ -32,8 +32,8 @@ public class OpenApiConfiguration {
 
     private Contact apiContact() {
         return new Contact()
-                .name("PROJECT GROUP NAME")
-                .email("EMAIL ADDRESS OF PROJECT GROUP")
-                .url("Project repo address");
+                .name("BUGSSQUAD")
+                .email("bugssquadind@gmail.com")
+                .url("");
     }
 }
