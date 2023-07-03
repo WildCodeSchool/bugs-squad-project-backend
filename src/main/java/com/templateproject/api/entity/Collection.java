@@ -22,10 +22,6 @@ public class Collection {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -65,4 +61,6 @@ public class Collection {
     public void setLinks(List<Link> links) {
         this.links = links;
     }
+
+
 }
