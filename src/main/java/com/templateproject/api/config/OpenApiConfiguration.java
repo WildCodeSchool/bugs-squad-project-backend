@@ -17,7 +17,7 @@ public class OpenApiConfiguration {
 
     private Info apiInfo() {
         return new Info()
-                .title("NAME OF YOUR API")
+                .title("kit")
                 .description("DESCRIPTION OF YOUR API")
                 .version("1.0")
                 .contact(apiContact())
@@ -37,4 +37,3 @@ public class OpenApiConfiguration {
                 .url("Project repo address");
     }
 }
-
