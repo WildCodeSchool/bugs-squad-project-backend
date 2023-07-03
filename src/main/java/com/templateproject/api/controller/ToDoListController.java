@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,6 +41,21 @@ public class ToDoListController {
   public ToDoList createToDoList(@RequestBody ToDoList toDoList) {
     return toDoListRepository.save(toDoList);
   }
+
+  @PutMapping("/api/todo-lists/{id}")
+  public ToDoList update(@PathVariable(value = "id") Long id) {
+    Optional<ToDoList> toDoList = toDoListRepository.findById(id);
+    if (toDoList.isPresent()) {
+      ToDoList updatedToDoList = toDoList.get();
+      updatedToDoList.setTitle(updatedToDoList.getTitle());
+      updatedToDoList.setDescription(updatedToDoList.getDescription());
+      updatedToDoList.setTasks(updatedToDoList.getTasks());
+      updatedToDoList.setFavorite(!updatedToDoList.isFavorite());
+      return toDoListRepository.save(toDoList.get());
+    }
+    return null;
+  }
+
 
 
 

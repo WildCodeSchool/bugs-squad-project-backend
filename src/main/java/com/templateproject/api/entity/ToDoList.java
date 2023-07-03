@@ -33,6 +33,14 @@ public class ToDoList {
       this.id = id;
     }
 
+    public List<Task> getTasks() {
+      return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+      this.tasks = tasks;
+    }
+
     public String getTitle() {
       return title;
     }

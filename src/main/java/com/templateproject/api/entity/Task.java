@@ -21,6 +21,14 @@ public class Task {
   @JoinColumn(name = "todolist_id")
   private ToDoList toDoList;
 
+  public ToDoList getToDoList() {
+    return toDoList;
+  }
+
+  public void setToDoList(ToDoList toDoList) {
+    this.toDoList = toDoList;
+  }
+
   public Task() {
   }
 
