@@ -1,7 +1,6 @@
 package com.templateproject.api.service;
 
 import com.templateproject.api.entity.Contact;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -23,12 +22,10 @@ public class EmailService {
         this.templateEngine = templateEngine;
     }
 
-    public void sendEmail (Contact contact, String subject, String body){
+    public void sendEmail (Contact contact, String subject){
         // Mail pour l'administrateur
         MimeMessagePreparator adminMessagePreparator = mimeMessage -> {
-            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,true, "UTF-8");
-            ClassPathResource resource = new ClassPathResource("static/K.I.T.png");
-            messageHelper.addAttachment("static/K.I.T.png", resource);
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom("noreply@votre-site-web.com");
             messageHelper.setTo(contact.getEmail());
             messageHelper.setSubject('[' + subject + "] Nouveau message de " + contact.getEmail());
@@ -42,16 +39,14 @@ public class EmailService {
 
         // Mail de confirmation pour l'utilisateur
         MimeMessagePreparator userMessagePreparator = mimeMessage -> {
-            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8"); // Set multipart flag to true
-            ClassPathResource resource = new ClassPathResource("K.I.T.png");
-            String resourceId = "resource";
-            messageHelper.addInline(resourceId, resource);
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom("noreply@votre-site-web.com");
             messageHelper.setTo(contact.getEmail());
             messageHelper.setSubject("Confirmation de formulaire de contact");
-            Context context = new Context(Locale.getDefault());
-            context.setVariable("logoUrl", "cid:" + resourceId); // Pass the logo URL as a variable
-            String content = templateEngine.process("EmailTemplateSender", context); // Update the template rendering code
+            String content = templateEngine.process("EmailTemplateSender", new Context(Locale.getDefault(),
+                    new HashMap<String, Object>() {{
+                        put("contact", contact);
+                    }}));
             messageHelper.setText(content, true);
         };
         javaMailSender.send(userMessagePreparator);
