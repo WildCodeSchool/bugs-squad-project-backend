@@ -32,10 +32,6 @@ public class ToDoList {
       return id;
     }
 
-    public void setId(Long id) {
-      this.id = id;
-    }
-
     public List<Task> getTasks() {
       return tasks;
     }

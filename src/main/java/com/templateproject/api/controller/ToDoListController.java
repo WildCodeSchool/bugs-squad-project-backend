@@ -3,7 +3,10 @@ package com.templateproject.api.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.templateproject.api.entity.ToDoList;
 import com.templateproject.api.repository.ToDoListRepository;
 
@@ -24,8 +27,7 @@ public class ToDoListController {
 
   @GetMapping("/todo-lists/{id}")
   public ToDoList getToDoList(Long id) {
-    Optional<ToDoList> toDoList = toDoListRepository.findById(id);
-    return toDoList.orElse(null);
+    return toDoListRepository.findById(id).orElse(null);
   }
 
   @PostMapping("/todo-lists")
@@ -44,13 +46,12 @@ public class ToDoListController {
       updatedToDoList.setFavorite(!updatedToDoList.isFavorite());
       return toDoListRepository.save(toDoList.get());
     }
-    return null;
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ToDoList not found");
   }
 
   @DeleteMapping("/todo-lists/{id}")
   public void deleteToDoList(@PathVariable(value = "id") Long id) {
-    Optional<ToDoList> toDoList = toDoListRepository.findById(id);
-    toDoList.ifPresent(toDoListRepository::delete);
+    toDoListRepository.deleteById(id);
   }
 
 }
