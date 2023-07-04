@@ -1,7 +1,7 @@
 package com.templateproject.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 public class Link {
@@ -19,9 +19,7 @@ public class Link {
     @Transient
     private long collectionId;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+   public  long getId() { return id; }
 
     public long getTitle() {
         return title;
