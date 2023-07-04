@@ -1,6 +1,7 @@
 package com.templateproject.api.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
@@ -10,9 +11,11 @@ public class Collection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Title is mandatory")
     private String title;
     private String description;
     private String color;
+    @Column(columnDefinition = "boolean default false")
     private boolean isFavorite;
 
     @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL)

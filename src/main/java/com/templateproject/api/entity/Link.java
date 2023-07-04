@@ -2,14 +2,17 @@ package com.templateproject.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Link {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private long title;
-    private long url;
+    @NotBlank(message = "Title is mandatory")
+    private String title;
+    @NotBlank(message = "URL is mandatory")
+    private String url;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "collection_id", nullable = true)
@@ -23,19 +26,19 @@ public class Link {
         return id;
     }
 
-    public long getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(long title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public long getUrl() {
+    public String getUrl() {
         return url;
     }
 
-    public void setUrl(long url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 
