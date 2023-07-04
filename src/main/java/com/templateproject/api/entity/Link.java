@@ -11,8 +11,8 @@ public class Link {
     private long title;
     private long url;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "collection_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "collection_id", nullable = true)
     @JsonIgnore
     private Collection collection;
 

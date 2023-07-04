@@ -15,7 +15,7 @@ public class Collection {
     private String color;
     private boolean isFavorite;
 
-    @OneToMany(mappedBy = "collection")
+    @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL)
     private List<Link> links;
 
     public Long getId() {

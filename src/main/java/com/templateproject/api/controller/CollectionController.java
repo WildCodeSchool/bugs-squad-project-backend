@@ -2,14 +2,13 @@ package com.templateproject.api.controller;
 
 import com.templateproject.api.entity.Collection;
 import com.templateproject.api.repository.CollectionRepository;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Controller
+@RestController
 public class CollectionController {
 
     private final CollectionRepository collectionRepository;

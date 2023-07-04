@@ -2,13 +2,12 @@ package com.templateproject.api.controller;
 
 import com.templateproject.api.entity.Link;
 import com.templateproject.api.repository.LinkRepository;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 public class LinkController {
 
     private final LinkRepository linkRepository;
