@@ -3,6 +3,7 @@ package com.templateproject.api.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +18,7 @@ public class Task {
   @GeneratedValue (strategy = GenerationType.IDENTITY)
   private Long id;
   private String description;
+  @Column(columnDefinition = "boolean default false")
   private boolean isDone;
 
   @ManyToOne(cascade = CascadeType.REFRESH)

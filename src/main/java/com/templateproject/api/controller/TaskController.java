@@ -4,14 +4,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.templateproject.api.entity.Collection;
 import com.templateproject.api.entity.Task;
 import com.templateproject.api.entity.ToDoList;
 import com.templateproject.api.repository.TaskRepository;
 import com.templateproject.api.repository.ToDoListRepository;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -36,7 +33,7 @@ public class TaskController {
   }
 
    @GetMapping("/api/lists/{listId}/tasks")
-  public List<Task> getAllTasksByListId(@Parameter @PathVariable Long listId) {
+  public List<Task> getAllTasksByListId(@PathVariable Long listId) {
     Optional<ToDoList> optionalList = toDoListRepository.findById(listId);
 
     return optionalList.map(ToDoList::getTasks).orElse(null);
@@ -64,13 +61,13 @@ public ResponseEntity<List<Task>> addTasksToList(@PathVariable Long listId, @Req
 }
 
   @PutMapping("/todo-lists/{id}/tasks/{taskid}")
-  public Task updateTask(@PathVariable(value = "id") Long id) {
-    Optional<Task> task = taskRepository.findById(id);
-    if (task.isPresent()) {
-      Task updatedTask = task.get();
+  public Task updateTask(@PathVariable(value = "id") Long id, @RequestBody Task task) {
+    Optional<Task> optionalTask = taskRepository.findById(id);
+    if (optionalTask.isPresent()) {
+      Task updatedTask = optionalTask.get();
       updatedTask.setDescription(updatedTask.getDescription());
       updatedTask.setDone(updatedTask.isDone());
-      return taskRepository.save(task.get());
+      return taskRepository.save(updatedTask);
     }
     return null;
   }

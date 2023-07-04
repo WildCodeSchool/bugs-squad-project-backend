@@ -3,6 +3,7 @@ package com.templateproject.api.entity;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +18,8 @@ public class ToDoList {
     private Long id;
     private String title;
     private String description;
+
+    @Column(columnDefinition = "boolean default false")
     private boolean isFavorite;
 
     @OneToMany(mappedBy = "toDoList", cascade = CascadeType.ALL)
