@@ -7,29 +7,29 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/rssFeeds")
 public class RssFeedController {
 
     private final RssFeedRepository rssFeedRepository;
     public RssFeedController(RssFeedRepository rssFeedRepository) {
         this.rssFeedRepository = rssFeedRepository;
     }
-    @GetMapping("/rssFeeds")
+    @GetMapping("")
     public List<RssFeed> index() {
         return rssFeedRepository.findAll();
     }
 
-    @GetMapping("/rssFeeds/{id}")
+    @GetMapping("/{id}")
     public RssFeed show(@PathVariable int id) {
         return  rssFeedRepository.findById((long) id).get();
     }
 
-    @PostMapping("/rssFeeds")
+    @PostMapping("")
     public RssFeed create(@RequestBody RssFeed rssFeed) {
         return rssFeedRepository.save(rssFeed);
     }
 
-    @PutMapping("/rssFeeds/{id}")
+    @PutMapping("/{id}")
     public RssFeed update(@PathVariable int id, @RequestBody RssFeed rssFeed) {
         RssFeed rssFeedToUpdate = rssFeedRepository.findById((long) id).get();
         rssFeedToUpdate.setUrl(rssFeed.getUrl());
@@ -37,13 +37,13 @@ public class RssFeedController {
         return rssFeedRepository.save(rssFeedToUpdate);
     }
 
-    @DeleteMapping("/rssFeeds/{id}")
+    @DeleteMapping("/{id}")
     public boolean delete(@PathVariable int id) {
         rssFeedRepository.deleteById((long) id);
         return true;
     }
 
-    @GetMapping("/rssFeeds/favorites")
+    @GetMapping("/favorites")
     public List<RssFeed> getAllFavorite() {
         return rssFeedRepository.findByIsFavoriteTrue();
     }
