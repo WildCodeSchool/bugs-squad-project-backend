@@ -4,23 +4,18 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.web.bind.annotation.*;
-
-
-import com.templateproject.api.entity.Task;
 import com.templateproject.api.entity.ToDoList;
-import com.templateproject.api.repository.TaskRepository;
 import com.templateproject.api.repository.ToDoListRepository;
 
 @RestController
 public class ToDoListController {
 
   final ToDoListRepository toDoListRepository;
-  final TaskRepository taskRepository;
 
-  public ToDoListController(ToDoListRepository toDoListRepository, TaskRepository taskRepository) {
+  public ToDoListController(ToDoListRepository toDoListRepository) {
     this.toDoListRepository = toDoListRepository;
-    this.taskRepository = taskRepository;
   }
+
 
   @GetMapping("/todo-lists")
   public List<ToDoList> getToDoLists() {
@@ -39,7 +34,7 @@ public class ToDoListController {
   }
 
   @PutMapping("/todo-lists/{id}")
-  public ToDoList update(@PathVariable(value = "id") Long id) {
+  public ToDoList updateToDoList(@PathVariable(value = "id") Long id) {
     Optional<ToDoList> toDoList = toDoListRepository.findById(id);
     if (toDoList.isPresent()) {
       ToDoList updatedToDoList = toDoList.get();
@@ -53,22 +48,9 @@ public class ToDoListController {
   }
 
   @DeleteMapping("/todo-lists/{id}")
-  public void delete(@PathVariable(value = "id") Long id) {
+  public void deleteToDoList(@PathVariable(value = "id") Long id) {
     Optional<ToDoList> toDoList = toDoListRepository.findById(id);
     toDoList.ifPresent(toDoListRepository::delete);
   }
-
-  //create a new task
-  @PostMapping("/todo-lists/{id}")
-  public Task createTask(@PathVariable("id") Long listId, @RequestBody Task task) {
-        Optional<ToDoList> optionalToDoList = toDoListRepository.findById(listId);
-        if (optionalToDoList.isPresent()) {
-            ToDoList toDoList = optionalToDoList.get();
-            task.setToDoList(toDoList);
-            return taskRepository.save(task);
-        } else {
-            return null;
-        }
-    }
 
 }

@@ -1,5 +1,7 @@
 package com.templateproject.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +21,7 @@ public class Task {
 
   @ManyToOne(cascade = CascadeType.REFRESH)
   @JoinColumn(name = "todolist_id")
+  @JsonIgnore
   private ToDoList toDoList;
 
   public ToDoList getToDoList() {
