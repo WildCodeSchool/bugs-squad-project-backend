@@ -18,6 +18,10 @@ public class RssFeed {
 
     private boolean isFavorite;
 
+    public Long getId() {
+        return id;
+    }
+
     public String getUrl() {
         return url;
     }

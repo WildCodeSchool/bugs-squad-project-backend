@@ -32,16 +32,10 @@ public class RssFeedController {
 
     @PutMapping("/{id}")
     public RssFeed update(@PathVariable int id, @RequestBody RssFeed rssFeed) {
-        Optional<RssFeed> optionalRssFeed = rssFeedRepository.findById((long) id);
-        if(optionalRssFeed.isPresent()) {
-            RssFeed rssFeedToUpdate = optionalRssFeed.get();
+            RssFeed rssFeedToUpdate = rssFeedRepository.findById((long) id).get();
             rssFeedToUpdate.setUrl(rssFeed.getUrl());
             rssFeedToUpdate.setFavorite(rssFeed.isFavorite());
             return rssFeedRepository.save(rssFeedToUpdate);
-        } else {
-            return rssFeedRepository.save(rssFeed);
-        }
-
     }
 
     @DeleteMapping("/{id}")
