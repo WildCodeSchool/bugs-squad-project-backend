@@ -5,6 +5,7 @@ import com.templateproject.api.repository.RssFeedRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rssFeeds")
@@ -31,10 +32,16 @@ public class RssFeedController {
 
     @PutMapping("/{id}")
     public RssFeed update(@PathVariable int id, @RequestBody RssFeed rssFeed) {
-        RssFeed rssFeedToUpdate = rssFeedRepository.findById((long) id).get();
-        rssFeedToUpdate.setUrl(rssFeed.getUrl());
-        rssFeedToUpdate.setFavorite(rssFeed.isFavorite());
-        return rssFeedRepository.save(rssFeedToUpdate);
+        Optional<RssFeed> optionalRssFeed = rssFeedRepository.findById((long) id);
+        if(optionalRssFeed.isPresent()) {
+            RssFeed rssFeedToUpdate = optionalRssFeed.get();
+            rssFeedToUpdate.setUrl(rssFeed.getUrl());
+            rssFeedToUpdate.setFavorite(rssFeed.isFavorite());
+            return rssFeedRepository.save(rssFeedToUpdate);
+        } else {
+            return rssFeedRepository.save(rssFeed);
+        }
+
     }
 
     @DeleteMapping("/{id}")
