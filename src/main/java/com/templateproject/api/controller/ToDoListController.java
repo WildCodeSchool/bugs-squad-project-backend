@@ -3,7 +3,6 @@ package com.templateproject.api.controller;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,16 +19,13 @@ import com.templateproject.api.repository.ToDoListRepository;
 @RestController
 public class ToDoListController {
 
-  private ToDoListRepository toDoListRepository;
-  private TaskRepository taskRepository;
+  final ToDoListRepository toDoListRepository;
+  final TaskRepository taskRepository;
 
-  public ToDoListController(ToDoListRepository toDoListRepository) {
+  public ToDoListController(ToDoListRepository toDoListRepository, TaskRepository taskRepository) {
     this.toDoListRepository = toDoListRepository;
-  }
-  public ToDoListController(TaskRepository taskRepository) {
     this.taskRepository = taskRepository;
   }
-
 
   @GetMapping("/api/todo-lists")
   public List<ToDoList> getToDoLists() {
@@ -39,10 +35,7 @@ public class ToDoListController {
   @GetMapping("/api/todo-lists/{id}")
   public ToDoList getToDoList(Long id) {
     Optional<ToDoList> toDoList = toDoListRepository.findById(id);
-    if (toDoList.isPresent()) {
-      return toDoList.get();
-    }
-    return null;
+    return toDoList.orElse(null);
   }
 
   @PostMapping("/api/todo-lists")
@@ -67,9 +60,7 @@ public class ToDoListController {
   @DeleteMapping("/api/todo-lists/{id}")
   public void delete(@PathVariable(value = "id") Long id) {
     Optional<ToDoList> toDoList = toDoListRepository.findById(id);
-    if (toDoList.isPresent()) {
-      toDoListRepository.delete(toDoList.get());
-    }
+    toDoList.ifPresent(toDoListRepository::delete);
   }
 
   //create a new task
