@@ -22,7 +22,7 @@ public class EmailService {
         this.templateEngine = templateEngine;
     }
 
-    public void sendEmail (Contact contact, String subject){
+    public void sendEmail (Contact contact, String subject, String text){
         // Mail pour l'administrateur
         MimeMessagePreparator adminMessagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);

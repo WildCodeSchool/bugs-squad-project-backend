@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/contact")
 public class ContactController {
 
-    private ContactService contactService;
-    private EmailService emailService;
+    private final ContactService contactService;
+    private final EmailService emailService;
 
     public ContactController(ContactService contactService, EmailService emailService) {
         this.contactService = contactService;
@@ -25,8 +25,8 @@ public class ContactController {
 
     @PostMapping
     public ResponseEntity<Contact> createContact(@Valid @RequestBody Contact contact) {
-        Contact contactEnregistre = contactService.enregistrerContact(contact);
-        emailService.sendEmail(contactEnregistre, "Contact", contactEnregistre.getText());
-        return new ResponseEntity<>(contactEnregistre, HttpStatus.CREATED);
+        Contact contactSave = contactService.contactSave(contact);
+        emailService.sendEmail(contactSave, "Contact", contactSave.getText());
+        return new ResponseEntity<>(contactSave, HttpStatus.CREATED);
     }
 }
