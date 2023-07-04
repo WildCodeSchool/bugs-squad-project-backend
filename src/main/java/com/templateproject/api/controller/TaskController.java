@@ -1,13 +1,14 @@
 package com.templateproject.api.controller;
 
-import com.templateproject.api.entity.*;
-import com.templateproject.api.repository.*;
+import com.templateproject.api.entity.Task;
+import com.templateproject.api.entity.ToDoList;
+import com.templateproject.api.repository.TaskRepository;
+import com.templateproject.api.repository.ToDoListRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -39,13 +40,12 @@ public class TaskController {
   }
 
  @PostMapping("/lists/{listId}/tasks")
-public ResponseEntity<List<Task>> addTasksToList(@PathVariable Long listId, @RequestBody List<Task> tasks) {
+  public @ResponseBody Task createTask(@PathVariable Long listId, @RequestBody Task task) {
     Optional<ToDoList> optionalList = toDoListRepository.findById(listId);
     if (optionalList.isPresent()) {
-        ToDoList list = optionalList.get();
-        tasks.forEach(task -> task.setToDoList(list));
-        taskRepository.saveAll(tasks);
-        return ResponseEntity.ok(tasks);
+      ToDoList list = optionalList.get();
+      task.setToDoList(list);
+      return taskRepository.save(task);
     } else {
     throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
     }
