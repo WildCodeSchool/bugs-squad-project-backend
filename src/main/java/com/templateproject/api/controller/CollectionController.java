@@ -20,7 +20,7 @@ public class CollectionController {
         this.collectionRepository = collectionRepository;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public @ResponseBody List<Collection> getAllCollections() {
         return collectionRepository.findAll();
     }
