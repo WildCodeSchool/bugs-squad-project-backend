@@ -37,18 +37,14 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Optional<Object> login(@RequestBody User user) {
-        Optional<Object> userFound = userRepository.findByEmail(user.getEmail());
-    if (userFound.isPresent()) {
-            User userToCheck = (User) userFound.get();
-            if (passwordEncoder.matches(user.getPassword(), userToCheck.getPassword())) {
-                return userFound;
-            } else {
-                throw new UsernameNotFoundException("Mot de passe incorrect.");
+    public User loginUser(@RequestParam String email, @RequestParam String password) {
+        Optional<Object> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            if (passwordEncoder.matches(password, user.get().toString())) {
+                return (User) user.get();
             }
-        } else {
-            throw new UsernameNotFoundException("Utilisateur introuvable.");
         }
+        throw new UsernameNotFoundException("Utilisateur introuvable.");
     }
 
     @DeleteMapping("/users/{id}")

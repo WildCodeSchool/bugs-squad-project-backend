@@ -38,13 +38,13 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(
                         authorize -> authorize
-                                .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/logout").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/register").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/logout").permitAll()
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .formLogin(withDefaults())
+                .httpBasic(withDefaults())
                 .oauth2Login(withDefaults())
                 .logout(logout -> logout
                         .logoutUrl("/api/logout")
