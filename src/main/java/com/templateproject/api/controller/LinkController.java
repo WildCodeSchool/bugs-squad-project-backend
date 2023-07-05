@@ -45,14 +45,13 @@ public class LinkController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public @ResponseBody Link updateLink(@PathVariable(value = "id") Long id, @RequestBody Link link) {
         Optional<Link> optionalLink = linkRepository.findById(id);
         if (optionalLink.isPresent()) {
             Link updatedLink = optionalLink.get();
             updatedLink.setTitle(link.getTitle());
             updatedLink.setUrl(link.getUrl());
-            updatedLink.setCollection(link.getCollection());
             return linkRepository.save(updatedLink);
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lien non trouvé");
