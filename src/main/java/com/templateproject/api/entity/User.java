@@ -2,14 +2,11 @@ package com.templateproject.api.entity;
 
 import java.util.Collection;
 
-import javax.management.relation.Role;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,7 +15,8 @@ import jakarta.persistence.Table;
 @Entity 
 @Table(name = "users")
 public class User implements UserDetails {
-    
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id ;
@@ -26,8 +24,7 @@ public class User implements UserDetails {
         private String password ;
         private String firstname ;
         private String lastname ;
-        @Enumerated(EnumType.STRING)
-        private Role role ;
+
  
     public User() {}
 
@@ -51,8 +48,38 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
     public String getPassword() {
         return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 
     public void setPassword(String password) {
@@ -75,39 +102,4 @@ public class User implements UserDetails {
         this.lastname = lastname;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
-    }
-
-    @Override
-    public String getUsername() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUsername'");
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isAccountNonExpired'");
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isAccountNonLocked'");
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isCredentialsNonExpired'");
-    }
-
-    @Override
-    public boolean isEnabled() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isEnabled'");
-    }
 }
