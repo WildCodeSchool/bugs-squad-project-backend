@@ -2,41 +2,43 @@ package com.templateproject.api.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    public SecurityConfig(ClientRegistrationRepository clientRegistrationRepository) {
+    }
+
     @Bean
-    protected void securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .authorizeRequests(
-                        authorize -> authorize
-                                .requestMatchers(HttpMethod.GET, "/api/**").hasRole("USER")
-                                .requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
-                                .anyRequest().authenticated()
-                )
-
-
-        @Bean
-     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-            auth.inMemoryAuthentication()
-                    .withUser("user").password("password").roles("USER")
-                    .and()
-                    .withUser("admin").password("password").roles("USER", "ADMIN");
-        }
-
-        @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    SecurityFilterChain http(HttpSecurity http) throws Exception {
+         http
+                .authorizeHttpRequests(
+                        authorize -> authorize
+                                .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/logout").permitAll()
+                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                                .anyRequest().authenticated()
+                )
+                .oauth2Login(Customizer.withDefaults())
+                .logout(logout -> logout.logoutSuccessUrl("/api/logout"));
+        return http.build();
+    }
 }
+
+
+
 
