@@ -27,7 +27,7 @@ public class ToDoListController {
 
   @GetMapping("/todo-lists/{id}")
   public ToDoList getToDoList(Long id) {
-    return toDoListRepository.findById(id).orElse(null);
+    return toDoListRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ToDoList not found"));
   }
 
   @PostMapping("/todo-lists")

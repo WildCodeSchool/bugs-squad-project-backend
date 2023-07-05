@@ -36,7 +36,7 @@ public class TaskController {
   @GetMapping("/todo-lists/tasks/{taskid}")
   public Task getTask(Long taskid) {
     Optional<Task> task = taskRepository.findById(taskid);
-    return task.orElse(null);
+    return task.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ToDoList not found"));
   }
 
  @PostMapping("/lists/{listId}/tasks")
@@ -52,8 +52,8 @@ public class TaskController {
   }
 
 
-  @PutMapping("/todo-lists/{id}/tasks/{taskid}")
-  public Task updateTask(@PathVariable(value = "id") Long id, @RequestBody Task task) {
+  @PutMapping("/todo-lists/tasks/{taskid}")
+  public Task updateTask(@PathVariable(value = "taskid") Long id, @RequestBody Task task) {
     Optional<Task> optionalTask = taskRepository.findById(id);
     if (optionalTask.isPresent()) {
       Task updatedTask = optionalTask.get();

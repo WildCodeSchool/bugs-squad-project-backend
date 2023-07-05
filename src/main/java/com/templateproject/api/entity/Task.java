@@ -36,6 +36,9 @@ public class Task {
 
   public Task() {
   }
+  public Task (String description) {
+    this.description = description;
+  }
 
   public Long getId() {
     return id;
