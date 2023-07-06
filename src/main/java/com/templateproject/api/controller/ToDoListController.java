@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.templateproject.api.entity.ToDoList;
+
 import com.templateproject.api.repository.ToDoListRepository;
 
 @RestController
@@ -36,15 +37,15 @@ public class ToDoListController {
   }
 
   @PutMapping("/todo-lists/{id}")
-  public ToDoList updateToDoList(@PathVariable(value = "id") Long id) {
-    Optional<ToDoList> toDoList = toDoListRepository.findById(id);
-    if (toDoList.isPresent()) {
-      ToDoList updatedToDoList = toDoList.get();
-      updatedToDoList.setTitle(updatedToDoList.getTitle());
-      updatedToDoList.setDescription(updatedToDoList.getDescription());
-      updatedToDoList.setTasks(updatedToDoList.getTasks());
-      updatedToDoList.setFavorite(!updatedToDoList.isFavorite());
-      return toDoListRepository.save(toDoList.get());
+  public ToDoList updateToDoList(@PathVariable(value = "id") Long id, @RequestBody ToDoList toDoList) {
+    Optional<ToDoList> optionaltoDoList = toDoListRepository.findById(id);
+    if (optionaltoDoList.isPresent()) {
+      ToDoList updatedToDoList = optionaltoDoList.get();
+      updatedToDoList.setTitle(toDoList.getTitle());
+      updatedToDoList.setDescription(toDoList.getDescription());
+      updatedToDoList.setTasks(toDoList.getTasks());
+      updatedToDoList.setFavorite(toDoList.isFavorite());
+      return toDoListRepository.save(updatedToDoList);
     }
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ToDoList not found");
   }
