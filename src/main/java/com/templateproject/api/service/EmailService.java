@@ -27,7 +27,7 @@ public class EmailService {
         MimeMessagePreparator adminMessagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom("noreply@votre-site-web.com");
-            messageHelper.setTo(contact.getEmail());
+            messageHelper.setTo("bugssquadind@gmail.com");
             messageHelper.setSubject('[' + subject + "] Nouveau message de " + contact.getEmail());
             String content = templateEngine.process("EmailTemplateAdmin", new Context(Locale.getDefault(),
                     new HashMap<String, Object>() {{

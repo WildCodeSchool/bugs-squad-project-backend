@@ -1,63 +1,54 @@
 package com.templateproject.api.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.Entity;
-
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity 
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Entity
 @Table(name = "users")
 public class User implements UserDetails {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id ;
-        private String email ;
-        private String password ;
-        private String firstname ;
-        private String lastname ;
-        private String role ;
+    private Long id ;
+    @NotBlank
+    private String email ;
+    @NotBlank
+    @JsonIgnore
+    private String password ;
+    @NotBlank
+    private String firstname ;
+    @NotBlank
+    private String lastname ;
 
-    public User() {}
+    private String role ;
 
-    public User(Long id, String email, String password, String firstname, String lastname) {
+    public void setId(Long id) {
         this.id = id;
-        this.email = email;
-        this.password = password;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.role = role;
     }
-
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setRole(String role) {this.role = role;}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
 
+    @Override
     public String getPassword() {
-        return this.password;
+        return null;
     }
 
     @Override
@@ -85,24 +76,22 @@ public class User implements UserDetails {
         return false;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public org.springframework.security.core.userdetails.User securityUser() {
+        List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(id.toString()));
+        if (this.getUsername().contains("admin@")) {
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else if (this.getUsername().contains("backoffice@")){
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_BACKOFFICE"));
+        } else {
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+        return new org.springframework.security.core.userdetails.User(this.getUsername(), this.getPassword(), grantedAuthorities);
     }
 
-    public String getFirstname() {
-        return this.firstname;
+    public Long getId() {
+        return id;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return this.lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
 
 }
