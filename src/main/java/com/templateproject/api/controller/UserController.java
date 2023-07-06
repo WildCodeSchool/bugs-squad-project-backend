@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -30,42 +31,44 @@ public class UserController {
         userRepository.findById(Long.parseLong(id));
     }
 
+
     @PostMapping("/register")
     public User createUser(@RequestBody User user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Cet email est déjà utilisé.");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole("USER");
         return userRepository.save(user);
     }
 
     @PostMapping("/login")
     public User loginUser(@RequestParam String email, @RequestParam String password) {
-        Optional<Object> user = userRepository.findByEmail(email);
-        if (user.isPresent()) {
-            if (passwordEncoder.matches(password, user.get().toString())) {
-                return (User) user.get();
-            }
+        User user = (User) userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur introuvable."));
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("Mot de passe incorrect.");
         }
-        throw new UsernameNotFoundException("Utilisateur introuvable.");
+        return user;
     }
 
-    @DeleteMapping("/users/{id}")
-    public HttpStatus deleteUser(@PathVariable Long id) {
-        userRepository.deleteById(id);
-        return HttpStatus.OK;
+        @DeleteMapping("/users/{id}")
+        public HttpStatus deleteUser (@PathVariable Long id){
+            userRepository.deleteById(id);
+            return HttpStatus.OK;
+        }
+
+        @PutMapping("/users/{id}")
+        public User updateUser (@PathVariable Long id, @RequestBody User updatedUser){
+            User user = userRepository.findById(id)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur introuvable."));
+            user.setEmail(updatedUser.getEmail());
+            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+            user.setFirstname(updatedUser.getFirstname());
+            user.setLastname(updatedUser.getLastname());
+
+            return userRepository.save(user);
+        }
+
+
     }
-
-    @PutMapping("/users/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Utilisateur introuvable."));
-        user.setEmail(updatedUser.getEmail());
-        user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-        user.setFirstname(updatedUser.getFirstname());
-        user.setLastname(updatedUser.getLastname());
-
-        return userRepository.save(user);
-    }
-
-
-
-
-}

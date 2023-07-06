@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Formulaire de contact</title>
+</head>
+<body>
+<p>Bonjour,</p>
+<p>Vous avez reçu un nouveau message de <strong th:text="${contact.email}"></strong> en utilisant le formulaire de contact de votre site web :</p>
+<p th:text="${contact.text}"></p>
+<p>Merci de répondre à ce message dès que possible.</p>
+<p>Cordialement,</p>
+<p>L'équipe de votre site web</p>
+</body>
+</html>

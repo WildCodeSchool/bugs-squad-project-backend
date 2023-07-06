@@ -16,7 +16,6 @@ import jakarta.persistence.Table;
 @Table(name = "users")
 public class User implements UserDetails {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id ;
@@ -24,8 +23,8 @@ public class User implements UserDetails {
         private String password ;
         private String firstname ;
         private String lastname ;
+        private String role ;
 
- 
     public User() {}
 
     public User(Long id, String email, String password, String firstname, String lastname) {
@@ -34,8 +33,10 @@ public class User implements UserDetails {
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.role = role;
     }
-    
+
+
     public Long getId() {
         return this.id;
     }
@@ -47,6 +48,8 @@ public class User implements UserDetails {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public void setRole(String role) {this.role = role;}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
