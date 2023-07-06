@@ -57,6 +57,6 @@ public class CollectionController {
     @PostMapping("/search")
     public @ResponseBody List<Collection> searchCollections(@RequestBody Map<String, String> body) {
         String collection = body.get("text");
-        return collectionRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(collection, collection);
+        return collectionRepository.findByTitleContaining(collection, collection);
     }
 }
