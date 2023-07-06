@@ -14,3 +14,19 @@
 - Run the application with the following command: `mvn spring-boot:run`
 - You can now go to http://localhost:8080/swagger-ui.html to see the Swagger UI
 - You are now ready to work !
+
+## ADD to application.dev.properties
+# Naming strategy
+server.servlet.contextPath=/api
+spring.mail.default-encoding=UTF-8
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=BugsSquadInd
+spring.mail.password=pehfaxknekzmhktb
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+spring.mail.properties.mail.smtp.starttls.required=true
+spring.mail.properties.mail.smtp.ssl.trust=smtp.gmail.com
+spring.mail.properties.mail.smtp.connectiontimeout=5000
+spring.mail.properties.mail.smtp.timeout=5000
+spring.mail.properties.mail.smtp.writetimeout=5000
