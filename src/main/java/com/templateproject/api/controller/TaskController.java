@@ -64,7 +64,7 @@ public class TaskController {
     throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
   }
 
-  @DeleteMapping("/todo-lists/{taskid}")
+  @DeleteMapping("/todo-lists/tasks/{taskid}")
   public @ResponseBody void deleteTask(@PathVariable(value = "taskid") Long id) {
     taskRepository.deleteById(id);
   }
