@@ -50,6 +50,18 @@ public class ToDoListController {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ToDoList not found");
   }
 
+  @PatchMapping("/todo-lists/{id}")
+  public ToDoList updateIsFavorite(@PathVariable(value="id") Long id, @RequestBody boolean isFavorite) {
+    Optional<ToDoList> optionalToDoList = toDoListRepository.findById(id);
+    if (optionalToDoList.isPresent()) {
+        ToDoList toDoList = optionalToDoList.get();
+        toDoList.setFavorite(isFavorite);
+        return toDoListRepository.save(toDoList);
+    } else {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ToDoList not found");
+    }
+  }
+
   @DeleteMapping("/todo-lists/{id}")
   public void deleteToDoList(@PathVariable(value = "id") Long id) {
     toDoListRepository.deleteById(id);
