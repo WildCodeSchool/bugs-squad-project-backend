@@ -58,7 +58,7 @@ public class TaskController {
     if (optionalTask.isPresent()) {
       Task updatedTask = optionalTask.get();
       updatedTask.setDescription(task.getDescription());
-      updatedTask.setDone(task.isDone());
+      updatedTask.setDone(task.getisDone());
       return taskRepository.save(updatedTask);
     }
     throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
