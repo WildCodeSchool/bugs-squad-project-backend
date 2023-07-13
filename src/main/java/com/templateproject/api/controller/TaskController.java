@@ -69,4 +69,16 @@ public class TaskController {
     taskRepository.deleteById(id);
   }
 
+  @PatchMapping("/todo-lists/tasks/{taskid}")
+  public Task updateIsDone(@PathVariable(value="taskid") Long id, @RequestBody boolean isDone) {
+    Optional<Task> optionalTask = taskRepository.findById(id);
+    if (optionalTask.isPresent()) {
+        Task task = optionalTask.get();
+        task.setDone(isDone);
+        return taskRepository.save(task);
+    } else {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found");
+    }
+  }
+
   }
