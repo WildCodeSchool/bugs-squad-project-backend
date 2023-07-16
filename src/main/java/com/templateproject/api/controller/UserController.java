@@ -5,12 +5,12 @@ import com.templateproject.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
 public class UserController {
 
     private final UserService userService;
@@ -19,8 +19,8 @@ public class UserController {
 
     // after login get the principal from the authentication object
     @GetMapping("/")
-    public String index(Authentication authentication) {
-        return "Hello " + authentication.getName();
+   public OAuth2AuthenticatedPrincipal getPrincipal(Authentication authentication) {
+        return (OAuth2AuthenticatedPrincipal) authentication.getPrincipal();
     }
 
     @Operation(summary = "Find users", description = "Find all users")
