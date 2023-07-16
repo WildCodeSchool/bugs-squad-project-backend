@@ -4,6 +4,7 @@ import com.templateproject.api.entity.User;
 import com.templateproject.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,10 +15,12 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(
-            UserService userService
-    ) {
-        this.userService = userService;
+    public UserController(UserService userService) {this.userService = userService;}
+
+    // after login get the principal from the authentication object
+    @GetMapping("/")
+    public String index(Authentication authentication) {
+        return "Hello " + authentication.getName();
     }
 
     @Operation(summary = "Find users", description = "Find all users")

@@ -51,15 +51,25 @@ public class SecurityConfiguration {
                 //Permit only if authenticated
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/**", "/index.html", "/swagger-ui/**", "/v3/**").permitAll();
+                    auth.requestMatchers("/api/products/**", "/api/users/**").hasAuthority("SCOPE_ROLE_ADMIN");
                     auth.anyRequest().authenticated();
                 })
                 //Change httpbasic to 0auth2
                 //.httpBasic(Customizer.withDefaults()
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                .oauth2Login(
+                        oauth2 -> oauth2
+                                .redirectionEndpoint(
+                                        redirection -> redirection
+                                                .baseUri("/api/")
+                                )
+                )
                 // Guaranties no session is created or used by spring security
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }
+
+
 
     @Bean
     public JwtEncoder jwtEncoder() {
