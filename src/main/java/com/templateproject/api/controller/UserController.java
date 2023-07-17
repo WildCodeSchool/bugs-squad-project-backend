@@ -17,11 +17,11 @@ public class UserController {
 
     public UserController(UserService userService) {this.userService = userService;}
 
-    // after login get the principal from the authentication object
     @GetMapping("/")
-   public OAuth2AuthenticatedPrincipal getPrincipal(Authentication authentication) {
+    public OAuth2AuthenticatedPrincipal getPrincipal(Authentication authentication) {
         return (OAuth2AuthenticatedPrincipal) authentication.getPrincipal();
     }
+
 
     @Operation(summary = "Find users", description = "Find all users")
     @SecurityRequirement(name = "Bearer Authentication")

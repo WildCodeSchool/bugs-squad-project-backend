@@ -53,36 +53,19 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    @Order(2)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                // Allow CORS for jwts and allow everybody to access the login endpoint
-                .csrf(AbstractHttpConfigurer::disable)
-                //Permit only if authenticated
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/**", "/index.html", "/swagger-ui/**", "/v3/**").permitAll();
-                    auth.requestMatchers("/api/products/**", "/api/users/**").hasAuthority("SCOPE_ROLE_ADMIN");
+                    auth.requestMatchers("/api/products/**", "/api/users/**").hasAuthority("SCOPE_ROlE_USER");
                     auth.anyRequest().authenticated();
                 })
-
+                .oauth2Login(withDefaults())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
-                // Guaranties no session is created or used by spring security
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(AbstractHttpConfigurer::disable)
                 .build();
     }
 
-    // Do a security for the oauth2 login
-    @Bean
-    @Order(1)
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((authorizeRequests) ->
-                        authorizeRequests
-                                .anyRequest().authenticated()
-                )
-                .oauth2Login(withDefaults());
-        return http.build();
-    }
 
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
