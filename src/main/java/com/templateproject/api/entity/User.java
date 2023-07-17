@@ -28,6 +28,8 @@ import jakarta.validation.constraints.Size;
 @Table(name = "users")
 public class User implements UserDetails {
 
+    // TODO extends UserGoogle for User + champs
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -38,6 +40,7 @@ public class User implements UserDetails {
     private String username;
 
     @JsonIgnore
+    @NotBlank(message = "Password is mandatory")
     private String password;
 
     @Email
@@ -51,6 +54,8 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> authorities = new HashSet<>();
+
+
 
     public User() {}
 
