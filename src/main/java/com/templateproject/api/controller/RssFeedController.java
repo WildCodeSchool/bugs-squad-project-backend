@@ -29,6 +29,7 @@ public class RssFeedController {
 
     @PostMapping("")
     public RssFeed create(@RequestBody RssFeed rssFeed) {
+        rssFeed.setFavorite(false);
         return rssFeedRepository.save(rssFeed);
     }
 
