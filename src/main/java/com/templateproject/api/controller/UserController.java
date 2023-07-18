@@ -17,10 +17,10 @@ public class UserController {
 
     public UserController(UserService userService) {this.userService = userService;}
 
-    @GetMapping("/")
-    public OAuth2AuthenticatedPrincipal getPrincipal(Authentication authentication) {
-        return (OAuth2AuthenticatedPrincipal) authentication.getPrincipal();
-    }
+    //@GetMapping("/")
+    //public OAuth2AuthenticatedPrincipal getPrincipal(Authentication authentication) {
+      //  return (OAuth2AuthenticatedPrincipal) authentication.getPrincipal();
+    //}
 
 
     @Operation(summary = "Find users", description = "Find all users")

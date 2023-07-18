@@ -57,10 +57,9 @@ public class SecurityConfiguration {
         return http
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/**", "/index.html", "/swagger-ui/**", "/v3/**").permitAll();
-                    auth.requestMatchers("/api/products/**", "/api/users/**").hasAuthority("SCOPE_ROlE_USER");
                     auth.anyRequest().authenticated();
                 })
-                .oauth2Login(withDefaults())
+                //.oauth2Login(withDefaults())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .build();
