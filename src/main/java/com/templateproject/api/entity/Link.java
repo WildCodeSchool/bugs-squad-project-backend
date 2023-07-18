@@ -9,7 +9,6 @@ public class Link {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank(message = "Title is mandatory")
     private String title;
     @NotBlank(message = "URL is mandatory")
     private String url;
