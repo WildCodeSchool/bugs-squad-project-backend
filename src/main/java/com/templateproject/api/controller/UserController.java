@@ -1,31 +1,37 @@
 package com.templateproject.api.controller;
 
+import com.templateproject.api.entity.LoginRequest;
+import com.templateproject.api.entity.LoginResponse;
 import com.templateproject.api.entity.User;
+import com.templateproject.api.repository.UserRepository;
 import com.templateproject.api.service.UserService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {this.userService = userService;}
+    private final UserRepository userRepository;
 
+    public UserController(UserService userService, UserRepository userRepository) {
+        this.userService = userService;
+        this.userRepository = userRepository;
+    }
 
     @PostMapping("/auth/register")
-    public User register(String username, String password, String email) {
-        return userService.register(username, password, email);
+    public User createUser(@RequestBody User user) {
+        return userService.createUser(user);
     }
 
     @PostMapping("/auth/login")
-    public String login(String email, String password) {
+    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+        String email = loginRequest.getEmail();
+        String password = loginRequest.getPassword();
         return userService.login(email, password);
     }
+
 
 }

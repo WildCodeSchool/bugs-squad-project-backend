@@ -1,5 +1,6 @@
 package com.templateproject.api.service;
 
+import com.templateproject.api.entity.LoginResponse;
 import com.templateproject.api.entity.Role;
 import com.templateproject.api.entity.User;
 import com.templateproject.api.repository.RoleRepository;
@@ -51,34 +52,30 @@ public class UserService implements UserDetailsService {
     public Optional<User> getUser(Long id) {
         return userRepository.findById(id);
     }
-
-    public User register(String username, String password, String email) {
-        //We want to encode the password before saving it to the database
-        String encodedPassword = passwordEncoder.encode(password);
-        //We want to save the user with the role USER
-        Role role = roleRepository.findByAuthority("ROLE_USER").isPresent() ?
-                roleRepository.findByAuthority("ROLE_USER").get() :
-                roleRepository.save(new Role("ROLE_USER"));
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        //We want to create a new user
-        User user = new User(username, encodedPassword, email, roles);
-        //We want to save the user to the database
-        return userRepository.save(user);
-    }
-
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
         return userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
+    public User createUser(User user) {
+        Role userRole = roleRepository.findByAuthority("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("Role non trouvé"));
 
-    public String login(String email, String password) {
-        Authentication authentication = this.authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(email, password)
-        );
-        return tokenService.generateToken(authentication);
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add(userRole);
+
+        user.setAuthorities(userRoles);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        return userRepository.save(user);
     }
 
+
+    public LoginResponse login(String email, String password) {
+        Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        String token = tokenService.generateToken(auth);
+        User user = userRepository.findByEmail(email).get();
+        return new LoginResponse(token, user);
+    }
 }
