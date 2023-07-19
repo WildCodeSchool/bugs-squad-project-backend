@@ -25,7 +25,7 @@ public class Task {
   @Column(columnDefinition = "boolean default false")
   private boolean isDone;
 
-  @ManyToOne(cascade = CascadeType.REFRESH)
+  @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(name = "todolist_id")
   @JsonIgnore
   private ToDoList toDoList;
