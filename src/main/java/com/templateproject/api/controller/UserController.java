@@ -17,25 +17,6 @@ public class UserController {
 
     public UserController(UserService userService) {this.userService = userService;}
 
-    //@GetMapping("/")
-    //public OAuth2AuthenticatedPrincipal getPrincipal(Authentication authentication) {
-      //  return (OAuth2AuthenticatedPrincipal) authentication.getPrincipal();
-    //}
-
-
-    @Operation(summary = "Find users", description = "Find all users")
-    @SecurityRequirement(name = "Bearer Authentication")
-    @GetMapping("/users/")
-    public List<User> getUsers() {
-        return userService.getUsers();
-    }
-
-    @Operation(summary = "Find user", description = "Find a user")
-    @SecurityRequirement(name = "Bearer Authentication")
-    @GetMapping("/users/{id}")
-    public User getUser(@PathVariable Long id) {
-        return userService.getUser(id);
-    }
 
     @PostMapping("/auth/register")
     public User register(String username, String password, String email) {

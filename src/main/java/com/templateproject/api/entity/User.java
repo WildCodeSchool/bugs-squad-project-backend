@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -25,6 +28,8 @@ import jakarta.validation.constraints.Size;
 
 
 @Entity
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
 
@@ -55,13 +60,9 @@ public class User implements UserDetails {
     )
     private Set<Role> authorities = new HashSet<>();
 
-
-
-    public User() {}
-
-    public User(String username, String password, String email, Set<Role> roles) {
+    public User(String username, String encodedPassword, String email, Set<Role> roles) {
         this.username = username;
-        this.password = password;
+        this.password = encodedPassword;
         this.email = email;
         this.authorities = roles;
     }
@@ -100,7 +101,7 @@ public class User implements UserDetails {
         return this.password;
     }
 
-    //Not really natural but we use the email as the username
+
     @Override
     public String getUsername() {
         return this.email;

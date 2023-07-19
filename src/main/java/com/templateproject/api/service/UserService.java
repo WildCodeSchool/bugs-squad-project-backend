@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -47,10 +48,8 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public User getUser(Long id) {
-        return userRepository.findById(id).isPresent() ?
-                userRepository.findById(id).get() :
-                null;
+    public Optional<User> getUser(Long id) {
+        return userRepository.findById(id);
     }
 
     public User register(String username, String password, String email) {
