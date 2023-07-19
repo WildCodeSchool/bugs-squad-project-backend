@@ -67,7 +67,6 @@ public class ToDoListController {
 
   @PatchMapping("/todo-lists/{id}/tasks")
   public ToDoList updateTasksPosition(@PathVariable(value="id") Long id, @RequestBody List<Task> tasks) {
-    System.out.println("task: " + tasks.get(0).getId());
     Optional<ToDoList> optionalToDoList = toDoListRepository.findById(id);
     if (optionalToDoList.isPresent()) {
         ToDoList toDoList = optionalToDoList.get();
