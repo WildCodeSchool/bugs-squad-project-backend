@@ -49,6 +49,18 @@ public class CollectionController {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Collection non trouvée");
     }
 
+    @PatchMapping("/{id}")
+    public @ResponseBody Collection updateIsFavorite(@PathVariable(value="id") Long id, @RequestBody boolean isFavorite) {
+        Optional<Collection> optionalCollection = collectionRepository.findById(id);
+        if (optionalCollection.isPresent()) {
+            Collection collection = optionalCollection.get();
+            collection.setFavorite(isFavorite);
+            return collectionRepository.save(collection);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ToDoList not found");
+        }
+    }
+
     @DeleteMapping("/{id}")
     public @ResponseBody void deleteCollection(@PathVariable(value = "id") Long id) {
         collectionRepository.deleteById(id);

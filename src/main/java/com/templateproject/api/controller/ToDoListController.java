@@ -22,7 +22,10 @@ public class ToDoListController {
 
 
   @GetMapping("/todo-lists")
-  public List<ToDoList> getToDoLists() {
+  public List<ToDoList> getToDoLists(@RequestParam(value="isfavorite", required = false) boolean isFavorite) {
+    if (isFavorite) {
+      return toDoListRepository.findByIsFavorite(isFavorite);
+    }
     return toDoListRepository.findAll();
   }
 

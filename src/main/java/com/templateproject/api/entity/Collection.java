@@ -18,7 +18,7 @@ public class Collection {
     @Column(columnDefinition = "boolean default false")
     private boolean isFavorite;
 
-    @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Link> links;
 
     public Long getId() {
