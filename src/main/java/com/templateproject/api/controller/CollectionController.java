@@ -64,7 +64,6 @@ public class CollectionController {
 
     @PatchMapping("/{id}/links")
     public Collection updateLinksPosition(@PathVariable(value = "id") Long id, @RequestBody List<Link> links) {
-        System.out.println("link:" + links.get(0).getId());
         Optional<Collection> optionalCollection = collectionRepository.findById(id);
         if (optionalCollection.isPresent()) {
             Collection collection = optionalCollection.get();
