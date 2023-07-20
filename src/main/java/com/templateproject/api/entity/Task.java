@@ -12,11 +12,20 @@ public class Task {
   private Long id;
 
   private String description;
+  private Integer position;
+
+  public Integer getPosition() {
+    return position;
+  }
+
+  public void setPosition(Integer position) {
+    this.position = position;
+  }
 
   @Column(columnDefinition = "boolean default false")
   private boolean isDone;
 
-  @ManyToOne(cascade = CascadeType.REFRESH)
+  @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(name = "todolist_id")
   @JsonIgnore
   private ToDoList toDoList;
