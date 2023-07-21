@@ -1,13 +1,11 @@
 package com.templateproject.api.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Dashboard {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int xPos;
     private int yPos;
@@ -16,6 +14,10 @@ public class Dashboard {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getxPos() {
