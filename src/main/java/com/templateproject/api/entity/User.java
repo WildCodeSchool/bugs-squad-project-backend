@@ -33,8 +33,6 @@ import jakarta.validation.constraints.Size;
 @Table(name = "users")
 public class User implements UserDetails {
 
-    // TODO extends UserGoogle for User + champs
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -68,6 +66,13 @@ public class User implements UserDetails {
         this.email = email;
         this.authorities = roles;
     }
+
+    public User(String username, String email, Set<Role> roles) {
+        this.username = username;
+        this.email = email;
+        this.authorities = roles;
+    }
+
 
     public Long getId() {
         return this.id;
