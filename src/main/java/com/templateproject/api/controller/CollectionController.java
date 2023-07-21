@@ -21,7 +21,7 @@ public class CollectionController {
     }
 
     @GetMapping("")
-    public @ResponseBody List<Collection> getAllCollections() {
+    public @ResponseBody List<Collection> getAllCollections(@RequestParam(value="isfavorite", required = false) boolean isFavorite) {
         return collectionRepository.findAll();
     }
 
