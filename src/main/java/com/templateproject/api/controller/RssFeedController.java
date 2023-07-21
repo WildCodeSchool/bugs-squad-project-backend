@@ -29,6 +29,7 @@ public class RssFeedController {
 
     @PostMapping("")
     public RssFeed create(@RequestBody RssFeed rssFeed) {
+        rssFeed.setFavorite(false);
         return rssFeedRepository.save(rssFeed);
     }
 
@@ -39,6 +40,7 @@ public class RssFeedController {
             RssFeed rssFeedToUpdate = optionalFeedRss.get();
             rssFeedToUpdate.setUrl(rssFeed.getUrl());
             rssFeedToUpdate.setFavorite(rssFeed.isFavorite());
+            rssFeedToUpdate.setTitle(rssFeed.getTitle());
             return rssFeedRepository.save(rssFeedToUpdate);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Rss Feed Not Found");

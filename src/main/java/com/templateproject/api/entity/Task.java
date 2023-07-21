@@ -2,14 +2,7 @@ package com.templateproject.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Task {
@@ -17,11 +10,22 @@ public class Task {
   @Id
   @GeneratedValue (strategy = GenerationType.IDENTITY)
   private Long id;
+
   private String description;
+  private Integer position;
+
+  public Integer getPosition() {
+    return position;
+  }
+
+  public void setPosition(Integer position) {
+    this.position = position;
+  }
+
   @Column(columnDefinition = "boolean default false")
   private boolean isDone;
 
-  @ManyToOne(cascade = CascadeType.REFRESH)
+  @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(name = "todolist_id")
   @JsonIgnore
   private ToDoList toDoList;
@@ -52,7 +56,7 @@ public class Task {
     this.description = description;
   }
 
-  public boolean isDone() {
+  public boolean getisDone() {
     return isDone;
   }
 

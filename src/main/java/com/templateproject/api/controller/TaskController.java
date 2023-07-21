@@ -58,15 +58,27 @@ public class TaskController {
     if (optionalTask.isPresent()) {
       Task updatedTask = optionalTask.get();
       updatedTask.setDescription(task.getDescription());
-      updatedTask.setDone(task.isDone());
+      updatedTask.setDone(task.getisDone());
       return taskRepository.save(updatedTask);
     }
     throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
   }
 
-  @DeleteMapping("/todo-lists/{taskid}")
+  @DeleteMapping("/todo-lists/tasks/{taskid}")
   public @ResponseBody void deleteTask(@PathVariable(value = "taskid") Long id) {
     taskRepository.deleteById(id);
+  }
+
+  @PatchMapping("/todo-lists/tasks/{taskid}")
+  public Task updateIsDone(@PathVariable(value="taskid") Long id, @RequestBody boolean isDone) {
+    Optional<Task> optionalTask = taskRepository.findById(id);
+    if (optionalTask.isPresent()) {
+        Task task = optionalTask.get();
+        task.setDone(isDone);
+        return taskRepository.save(task);
+    } else {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found");
+    }
   }
 
   }
