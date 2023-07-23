@@ -59,8 +59,15 @@ public class UserService implements UserDetailsService {
     }
 
     public User createUser(User user) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new RuntimeException("Email déjà utilisé");
+        }
+
         Role userRole = roleRepository.findByAuthority("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("Role non trouvé"));
+                .orElseGet(() -> {
+                    Role newUserRole = new Role("ROLE_USER");
+                    return roleRepository.save(newUserRole);
+                });
 
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(userRole);
@@ -70,6 +77,7 @@ public class UserService implements UserDetailsService {
 
         return userRepository.save(user);
     }
+
 
 
     public LoginResponse login(String email, String password) {
