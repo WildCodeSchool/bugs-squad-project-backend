@@ -105,6 +105,6 @@ public class UserService implements UserDetailsService {
         Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         String token = tokenService.generateToken(auth);
         User user = userRepository.findByEmail(email).get();
-        return new LoginResponse(token, user);
+        return new LoginResponse(token, user, user.getOrigin());
     }
 }

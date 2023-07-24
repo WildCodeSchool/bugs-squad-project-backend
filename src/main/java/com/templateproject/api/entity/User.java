@@ -50,13 +50,12 @@ public class User implements UserDetails {
     private Set<Role> authorities = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "origin") // Ajoutez une colonne pour enregistrer l'origine de l'utilisateur
+    @Column(name = "origin")
     private Origin origin;
 
     public Origin getOrigin() {
         return origin;
     }
-
     public void setOrigin(Origin origin) {
         this.origin = origin;
     }
