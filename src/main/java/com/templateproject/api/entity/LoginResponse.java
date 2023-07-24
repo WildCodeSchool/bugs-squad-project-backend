@@ -5,12 +5,10 @@ public class LoginResponse {
     private String token;
     private User user;
 
-
-    public LoginResponse(String token, User user) {
+    public LoginResponse(String token, User user, Origin origin) {
         this.token = token;
         this.user = user;
     }
-
     public String getToken() {
         return token;
     }

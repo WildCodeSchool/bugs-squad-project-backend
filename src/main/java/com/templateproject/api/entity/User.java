@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -37,8 +38,6 @@ import jakarta.validation.constraints.Size;
 @Table(name = "users")
 public class User implements UserDetails {
 
-    // TODO extends UserGoogle for User + champs
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -49,21 +48,31 @@ public class User implements UserDetails {
     private String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotBlank(message = "Password is mandatory")
-    private String password;
+    protected String password;
 
     @Email
     @NotBlank(message = "Email is mandatory")
-    @Column(unique=true, nullable=false)
+    @Column(unique = true, nullable = false)
     private String email;
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role_junction",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-      private Set<Role> authorities = new HashSet<>();
+    private Set<Role> authorities = new HashSet<>();
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "origin")
+    private Origin origin;
+
+    public Origin getOrigin() {
+        return origin;
+    }
+    public void setOrigin(Origin origin) {
+        this.origin = origin;
+    }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ToDoList> toDoLists;
@@ -81,6 +90,12 @@ public class User implements UserDetails {
     public User(String username, String encodedPassword, String email, Set<Role> roles) {
         this.username = username;
         this.password = encodedPassword;
+        this.email = email;
+        this.authorities = roles;
+    }
+
+    public User(String username, String email, Set<Role> roles) {
+        this.username = username;
         this.email = email;
         this.authorities = roles;
     }
