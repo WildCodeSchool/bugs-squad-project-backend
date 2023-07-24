@@ -3,9 +3,12 @@ package com.templateproject.api.service;
 import com.templateproject.api.entity.LoginResponse;
 import com.templateproject.api.entity.Role;
 import com.templateproject.api.entity.User;
+import com.templateproject.api.entity.Origin;
+import com.templateproject.api.entity.UserGoogle;
 import com.templateproject.api.repository.RoleRepository;
 import com.templateproject.api.repository.UserRepository;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -44,7 +48,6 @@ public class UserService implements UserDetailsService {
         this.authManager = authManager;
         this.tokenService = tokenService;
     }
-
     public List<User> getUsers() {
         return userRepository.findAll();
     }
@@ -57,27 +60,45 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
-
     public User createUser(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new RuntimeException("Email déjà utilisé");
         }
-
         Role userRole = roleRepository.findByAuthority("ROLE_USER")
                 .orElseGet(() -> {
                     Role newUserRole = new Role("ROLE_USER");
                     return roleRepository.save(newUserRole);
                 });
-
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(userRole);
-
-        user.setAuthorities(userRoles);
+        user.setOrigin(Origin.LOCAL);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setAuthorities(userRoles);
 
         return userRepository.save(user);
     }
 
+    public UserGoogle createUserGoogle(UserGoogle userGoogle) {
+        Role userRole = roleRepository.findByAuthority("ROLE_USER")
+                .orElseGet(() -> {
+                    Role newUserRole = new Role("ROLE_USER");
+                    return roleRepository.save(newUserRole);
+                });
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add(userRole);
+        if (userGoogle.getOrigin() == Origin.GOOGLE) {
+            if (userRepository.findByEmail(userGoogle.getGoogleEmail()).isPresent()) {
+                throw new RuntimeException("Email déjà utilisé");
+            }
+        }
+        userGoogle.setPassword(null);
+        userGoogle.setGoogleId(userGoogle.getGoogleId());
+        userGoogle.setGoogleEmail(userGoogle.getGoogleEmail());
+
+        userGoogle.setAuthorities(userRoles);
+
+        return userRepository.save(userGoogle);
+    }
 
 
     public LoginResponse login(String email, String password) {

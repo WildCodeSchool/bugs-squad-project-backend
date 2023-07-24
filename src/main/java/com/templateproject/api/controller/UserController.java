@@ -3,6 +3,7 @@ package com.templateproject.api.controller;
 import com.templateproject.api.entity.LoginRequest;
 import com.templateproject.api.entity.LoginResponse;
 import com.templateproject.api.entity.User;
+import com.templateproject.api.entity.UserGoogle;
 import com.templateproject.api.repository.UserRepository;
 import com.templateproject.api.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,11 +15,9 @@ public class UserController {
 
     private final UserService userService;
 
-    private final UserRepository userRepository;
 
     public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
-        this.userRepository = userRepository;
     }
 
     @PostMapping("/auth/register")
@@ -26,6 +25,11 @@ public class UserController {
         return userService.createUser(user);
     }
 
+
+    @PostMapping("/auth/register/google")
+    public User createUserGoogle(@RequestBody UserGoogle userGoogle) {
+        return userService.createUserGoogle(userGoogle);
+    }
     @PostMapping("/auth/login")
     public LoginResponse login(@RequestBody LoginRequest loginRequest) {
         String email = loginRequest.getEmail();

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,16 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -43,22 +34,32 @@ public class User implements UserDetails {
     private String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotBlank(message = "Password is mandatory")
-    private String password;
+    protected String password;
 
     @Email
     @NotBlank(message = "Email is mandatory")
-    @Column(unique=true, nullable=false)
+    @Column(unique = true, nullable = false)
     private String email;
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role_junction",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-
     private Set<Role> authorities = new HashSet<>();
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "origin") // Ajoutez une colonne pour enregistrer l'origine de l'utilisateur
+    private Origin origin;
+
+    public Origin getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(Origin origin) {
+        this.origin = origin;
+    }
 
     public User(String username, String encodedPassword, String email, Set<Role> roles) {
         this.username = username;
@@ -72,7 +73,6 @@ public class User implements UserDetails {
         this.email = email;
         this.authorities = roles;
     }
-
 
     public Long getId() {
         return this.id;
@@ -141,5 +141,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }
+

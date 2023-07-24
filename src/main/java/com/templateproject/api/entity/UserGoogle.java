@@ -6,8 +6,6 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,16 +18,9 @@ public class UserGoogle extends User {
     @Column(name = "google_email")
     private String googleEmail;
 
-    private String password = null;
+    private String password;
 
-    private Integer sub; // Google's unique identifier for the user
-
-    public UserGoogle(String username, String email, String googleId, String googleEmail, String password, Set<Role> roles) {
-        super(username, email, roles);
-        this.googleId = googleId;
-        this.googleEmail = googleEmail;
-        this.password = password;
-    }
+    private String origin = "GOOGLE";
 
     public String getGoogleId() {
         return googleId;
