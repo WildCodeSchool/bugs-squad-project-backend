@@ -3,6 +3,7 @@ package com.templateproject.api.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Task {
@@ -11,6 +12,7 @@ public class Task {
   @GeneratedValue (strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @NotBlank(message = "Description is mandatory")
   private String description;
   private Integer position;
 
