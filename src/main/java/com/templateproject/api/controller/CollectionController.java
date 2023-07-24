@@ -1,6 +1,7 @@
 package com.templateproject.api.controller;
 
 import com.templateproject.api.entity.Collection;
+import com.templateproject.api.entity.Link;
 import com.templateproject.api.repository.CollectionRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -58,6 +59,21 @@ public class CollectionController {
             return collectionRepository.save(collection);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ToDoList not found");
+        }
+    }
+
+    @PatchMapping("/{id}/links")
+    public Collection updateLinksPosition(@PathVariable(value = "id") Long id, @RequestBody List<Link> links) {
+        Optional<Collection> optionalCollection = collectionRepository.findById(id);
+        if (optionalCollection.isPresent()) {
+            Collection collection = optionalCollection.get();
+            for (Link link : links) {
+                link.setCollection(collection);
+            }
+            collection.setLinks(links);
+            return collectionRepository.save(collection);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Collection non trouvée");
         }
     }
 
