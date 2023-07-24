@@ -2,6 +2,7 @@ package com.templateproject.api.entity;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -21,6 +23,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -59,6 +63,19 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ToDoList> toDoLists;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Collection> collections;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<RssFeed> rssFeeds;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "dashboard_id", referencedColumnName = "id")
+    private Dashboard dashboard;
 
     private Set<Role> authorities = new HashSet<>();
 
@@ -136,5 +153,30 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+       public List<ToDoList> getToDoLists() {
+      return toDoLists;
+    }
+
+    public void setToDoLists(List<ToDoList> toDoLists) {
+      this.toDoLists = toDoLists;
+    }
+
+    public List<Collection> getCollections() {
+      return collections;
+    }
+
+    public void setCollections(List<Collection> collections) {
+      this.collections = collections;
+    }
+
+    public List<RssFeed> getRssFeeds() {
+      return rssFeeds;
+    }
+
+    public void setRssFeeds(List<RssFeed> rssFeeds) {
+      this.rssFeeds = rssFeeds;
+    }
+
 
 }

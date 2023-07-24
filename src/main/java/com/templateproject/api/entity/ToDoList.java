@@ -2,6 +2,8 @@ package com.templateproject.api.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -12,6 +14,11 @@ public class ToDoList {
     private Long id;
     private String title;
     private String description;
+
+  @ManyToOne(cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "user_id")
+  @JsonIgnore
+    private User user;
 
     @Column(columnDefinition = "boolean default false")
     private boolean isFavorite;
@@ -61,5 +68,13 @@ public class ToDoList {
     public void setFavorite(boolean isFavorite) {
       this.isFavorite = isFavorite;
     }
+
+    public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
 
 }
