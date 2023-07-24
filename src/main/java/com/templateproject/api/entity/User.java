@@ -63,6 +63,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+      private Set<Role> authorities = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ToDoList> toDoLists;
@@ -76,8 +77,6 @@ public class User implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "dashboard_id", referencedColumnName = "id")
     private Dashboard dashboard;
-
-    private Set<Role> authorities = new HashSet<>();
 
     public User(String username, String encodedPassword, String email, Set<Role> roles) {
         this.username = username;
