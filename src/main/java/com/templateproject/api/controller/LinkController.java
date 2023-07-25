@@ -1,6 +1,6 @@
 package com.templateproject.api.controller;
 
-import com.templateproject.api.entity.LinksCollection;
+import com.templateproject.api.entity.Collection;
 import com.templateproject.api.entity.Link;
 import com.templateproject.api.repository.CollectionRepository;
 import com.templateproject.api.repository.LinkRepository;
@@ -35,13 +35,13 @@ public class LinkController {
 
     @PostMapping("/{collectionId}")
     public @ResponseBody Link createLink(@PathVariable(value = "collectionId") Long collectionId, @RequestBody Link link) {
-        Optional<LinksCollection> optionalCollection = collectionRepository.findById(collectionId);
+        Optional<Collection> optionalCollection = collectionRepository.findById(collectionId);
         if (optionalCollection.isPresent()) {
-            LinksCollection linksCollection = optionalCollection.get();
-            link.setCollection(linksCollection);
+            Collection collection = optionalCollection.get();
+            link.setCollection(collection);
             return linkRepository.save(link);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "LinksCollection non trouvée");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Collection non trouvée");
         }
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class LinksCollection {
+public class Collection {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ public class LinksCollection {
     @Column(columnDefinition = "boolean default false")
     private boolean isFavorite;
 
-    @OneToMany(mappedBy = "linksCollection", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL)
     private List<Link> links;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

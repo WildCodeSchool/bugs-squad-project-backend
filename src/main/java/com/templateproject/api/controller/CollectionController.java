@@ -1,6 +1,6 @@
 package com.templateproject.api.controller;
 
-import com.templateproject.api.entity.LinksCollection;
+import com.templateproject.api.entity.Collection;
 import com.templateproject.api.entity.Link;
 import com.templateproject.api.repository.CollectionRepository;
 import org.springframework.http.HttpStatus;
@@ -22,58 +22,58 @@ public class CollectionController {
     }
 
     @GetMapping("")
-    public @ResponseBody List<LinksCollection> getAllCollections(@RequestParam(value="isfavorite", required = false) boolean isFavorite) {
+    public @ResponseBody List<Collection> getAllCollections(@RequestParam(value="isfavorite", required = false) boolean isFavorite) {
         return collectionRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody LinksCollection getCollectionById(@PathVariable(value = "id") Long id) {
+    public @ResponseBody Collection getCollectionById(@PathVariable(value = "id") Long id) {
         return collectionRepository.findById(id).orElse(null);
     }
 
     @PostMapping("")
-    public @ResponseBody LinksCollection createCollection(@RequestBody LinksCollection linksCollection) {
-        return collectionRepository.save(linksCollection);
+    public @ResponseBody Collection createCollection(@RequestBody Collection collection) {
+        return collectionRepository.save(collection);
     }
 
     @PutMapping("/{id}")
-    public @ResponseBody LinksCollection updateCollection(@PathVariable(value = "id") Long id, @RequestBody LinksCollection linksCollection) {
-        Optional<LinksCollection> optionalCollection = collectionRepository.findById(id);
+    public @ResponseBody Collection updateCollection(@PathVariable(value = "id") Long id, @RequestBody Collection collection) {
+        Optional<Collection> optionalCollection = collectionRepository.findById(id);
         if (optionalCollection.isPresent()) {
-            LinksCollection updatedLinksCollection = optionalCollection.get();
-            updatedLinksCollection.setTitle(linksCollection.getTitle());
-            updatedLinksCollection.setDescription(linksCollection.getDescription());
-            updatedLinksCollection.setColor(linksCollection.getColor());
-            updatedLinksCollection.setFavorite(linksCollection.isFavorite());
-            return collectionRepository.save(updatedLinksCollection);
+            Collection updatedCollection = optionalCollection.get();
+            updatedCollection.setTitle(collection.getTitle());
+            updatedCollection.setDescription(collection.getDescription());
+            updatedCollection.setColor(collection.getColor());
+            updatedCollection.setFavorite(collection.isFavorite());
+            return collectionRepository.save(updatedCollection);
         }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "LinksCollection non trouvée");
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Collection non trouvée");
     }
 
     @PatchMapping("/{id}")
-    public @ResponseBody LinksCollection updateIsFavorite(@PathVariable(value="id") Long id, @RequestBody boolean isFavorite) {
-        Optional<LinksCollection> optionalCollection = collectionRepository.findById(id);
+    public @ResponseBody Collection updateIsFavorite(@PathVariable(value="id") Long id, @RequestBody boolean isFavorite) {
+        Optional<Collection> optionalCollection = collectionRepository.findById(id);
         if (optionalCollection.isPresent()) {
-            LinksCollection linksCollection = optionalCollection.get();
-            linksCollection.setFavorite(isFavorite);
-            return collectionRepository.save(linksCollection);
+            Collection collection = optionalCollection.get();
+            collection.setFavorite(isFavorite);
+            return collectionRepository.save(collection);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ToDoList not found");
         }
     }
 
     @PatchMapping("/{id}/links")
-    public LinksCollection updateLinksPosition(@PathVariable(value = "id") Long id, @RequestBody List<Link> links) {
-        Optional<LinksCollection> optionalCollection = collectionRepository.findById(id);
+    public Collection updateLinksPosition(@PathVariable(value = "id") Long id, @RequestBody List<Link> links) {
+        Optional<Collection> optionalCollection = collectionRepository.findById(id);
         if (optionalCollection.isPresent()) {
-            LinksCollection linksCollection = optionalCollection.get();
+            Collection collection = optionalCollection.get();
             for (Link link : links) {
-                link.setCollection(linksCollection);
+                link.setCollection(collection);
             }
-            linksCollection.setLinks(links);
-            return collectionRepository.save(linksCollection);
+            collection.setLinks(links);
+            return collectionRepository.save(collection);
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "LinksCollection non trouvée");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Collection non trouvée");
         }
     }
 
@@ -83,7 +83,7 @@ public class CollectionController {
     }
 
     @PostMapping("/search")
-    public @ResponseBody List<LinksCollection> searchCollections(@RequestBody Map<String, String> body) {
+    public @ResponseBody List<Collection> searchCollections(@RequestBody Map<String, String> body) {
         String collection = body.get("text");
         return collectionRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(collection, collection);
     }

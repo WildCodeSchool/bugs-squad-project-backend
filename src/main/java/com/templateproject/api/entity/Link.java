@@ -15,9 +15,9 @@ public class Link {
     private Integer position;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "linksCollection_id", nullable = true)
+    @JoinColumn(name = "collection_id", nullable = true)
     @JsonIgnore
-    private LinksCollection linksCollection;
+    private Collection collection;
 
     @Transient
     private long collectionId;
@@ -50,15 +50,15 @@ public class Link {
         this.position = position;
     }
 
-    public LinksCollection getCollection() {
-        return linksCollection;
+    public Collection getCollection() {
+        return collection;
     }
 
-    public void setCollection(LinksCollection linksCollection) {
-        this.linksCollection = linksCollection;
+    public void setCollection(Collection collection) {
+        this.collection = collection;
     }
 
     public long getCollectionId() {
-        return linksCollection.getId();
+        return collection.getId();
     }
 }
