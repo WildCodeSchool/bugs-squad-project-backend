@@ -78,7 +78,7 @@ public class User implements UserDetails {
     private List<ToDoList> toDoLists;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<LinksCollection> collections;
+    private List<Collection> collections;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<RssFeed> rssFeeds;
@@ -176,11 +176,11 @@ public class User implements UserDetails {
       this.toDoLists = toDoLists;
     }
 
-    public List<LinksCollection> getCollections() {
+    public List<Collection> getCollections() {
       return collections;
     }
 
-    public void setCollections(List<LinksCollection> collections) {
+    public void setCollections(List<Collection> collections) {
       this.collections = collections;
     }
 
