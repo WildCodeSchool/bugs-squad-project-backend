@@ -23,7 +23,7 @@ public class LinkController {
         this.collectionRepository = collectionRepository;
     }
 
-    @GetMapping("")
+    @GetMapping()
     public @ResponseBody List<Link> getAllLinks() {
         return linkRepository.findAll();
     }

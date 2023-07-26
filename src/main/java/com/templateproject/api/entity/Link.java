@@ -1,10 +1,13 @@
 package com.templateproject.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
+
 public class Link {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,8 +17,9 @@ public class Link {
     private String url;
     private Integer position;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "linksCollection_id", nullable = true)
+    @JsonIdentityReference(alwaysAsId = true)
     @JsonIgnore
     private LinksCollection linksCollection;
 

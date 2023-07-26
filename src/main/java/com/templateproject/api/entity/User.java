@@ -1,5 +1,7 @@
 package com.templateproject.api.entity;
 
+
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -120,13 +122,14 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
-    }
 
     public void setAuthorities(Set<Role> authorities) {
         this.authorities = authorities;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 
     @Override
