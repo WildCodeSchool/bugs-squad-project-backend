@@ -38,7 +38,7 @@ public class LinkController {
         Optional<LinksCollection> optionalCollection = linksCollectionRepository.findById(collectionId);
         if (optionalCollection.isPresent()) {
             LinksCollection linksCollection = optionalCollection.get();
-            link.setCollection(linksCollection);
+            link.setLinksCollection(linksCollection);
             return linkRepository.save(link);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "LinksCollection non trouvée");

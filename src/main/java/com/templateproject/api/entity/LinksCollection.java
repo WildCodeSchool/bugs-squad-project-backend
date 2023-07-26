@@ -21,7 +21,7 @@ public class LinksCollection {
     @Column(columnDefinition = "boolean default false")
     private boolean isFavorite;
 
-    @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "linksCollection", cascade = CascadeType.ALL)
     private List<Link> links;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

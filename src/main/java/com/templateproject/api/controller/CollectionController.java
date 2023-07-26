@@ -68,7 +68,7 @@ public class CollectionController {
         if (optionalCollection.isPresent()) {
             LinksCollection linksCollection = optionalCollection.get();
             for (Link link : links) {
-                link.setCollection(linksCollection);
+                link.setLinksCollection(linksCollection);
             }
             linksCollection.setLinks(links);
             return linksCollectionRepository.save(linksCollection);
