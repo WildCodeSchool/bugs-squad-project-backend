@@ -1,9 +1,14 @@
 package com.templateproject.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
@@ -21,6 +26,11 @@ public class RssFeed {
     private boolean isFavorite;
     @NotBlank(message = "title cannot be blank")
     private String title;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+      private User user;
 
     public Long getId() {
         return id;
@@ -49,5 +59,13 @@ public class RssFeed {
     public void setTitle(String title) {
         this.title = title;
     }
-}
 
+
+    public User getUser() {
+        return user;
+      }
+
+      public void setUser(User user) {
+        this.user = user;
+      }
+}

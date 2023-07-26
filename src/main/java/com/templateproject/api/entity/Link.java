@@ -12,11 +12,12 @@ public class Link {
     private String title;
     @NotBlank(message = "URL is mandatory")
     private String url;
+    private Integer position;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "collection_id", nullable = true)
     @JsonIgnore
-    private Collection collection;
+    private LinksCollection linksCollection;
 
     @Transient
     private long collectionId;
@@ -41,15 +42,23 @@ public class Link {
         this.url = url;
     }
 
-    public Collection getCollection() {
-        return collection;
+    public Integer getPosition() {
+        return position;
     }
 
-    public void setCollection(Collection collection) {
-        this.collection = collection;
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    public LinksCollection getLinksCollection() {
+        return linksCollection;
+    }
+
+    public void setLinksCollection(LinksCollection linksCollection) {
+        this.linksCollection = linksCollection;
     }
 
     public long getCollectionId() {
-        return collection.getId();
+        return linksCollection.getId();
     }
 }

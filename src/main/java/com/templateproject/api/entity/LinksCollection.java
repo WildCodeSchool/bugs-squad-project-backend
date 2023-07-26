@@ -5,8 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-public class Collection {
+@Table(name = "collection")
+public class LinksCollection {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,8 +21,21 @@ public class Collection {
     @Column(columnDefinition = "boolean default false")
     private boolean isFavorite;
 
-    @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "linksCollection", cascade = CascadeType.ALL)
     private List<Link> links;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+      private User user;
+
+    public User getUser() {
+      return user;
+    }
+
+    public void setUser(User user) {
+      this.user = user;
+    }
 
     public Long getId() {
         return id;

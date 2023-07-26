@@ -51,13 +51,12 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/auth/register").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/swagger-ui.html").permitAll()
                         .requestMatchers("/v3/**").permitAll()
                         .requestMatchers("/contact/**").permitAll()
-                        .requestMatchers("/rssFeeds/**", "/collections/**","links/**","/todo-lists/**","/lists/**" ).permitAll()
+                        .requestMatchers("/rssFeeds/**", "/collections/**", "/links/**","/todo-lists/**","/lists/**" ).permitAll()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .build();

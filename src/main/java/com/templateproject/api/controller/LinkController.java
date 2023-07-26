@@ -1,8 +1,8 @@
 package com.templateproject.api.controller;
 
-import com.templateproject.api.entity.Collection;
+import com.templateproject.api.entity.LinksCollection;
 import com.templateproject.api.entity.Link;
-import com.templateproject.api.repository.CollectionRepository;
+import com.templateproject.api.repository.LinksCollectionRepository;
 import com.templateproject.api.repository.LinkRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +16,11 @@ import java.util.Optional;
 public class LinkController {
 
     private final LinkRepository linkRepository;
-    private final CollectionRepository collectionRepository;
+    private final LinksCollectionRepository linksCollectionRepository;
 
-    public LinkController(LinkRepository linkRepository, CollectionRepository collectionRepository) {
+    public LinkController(LinkRepository linkRepository, LinksCollectionRepository linksCollectionRepository) {
         this.linkRepository = linkRepository;
-        this.collectionRepository = collectionRepository;
+        this.linksCollectionRepository = linksCollectionRepository;
     }
 
     @GetMapping("")
@@ -35,13 +35,13 @@ public class LinkController {
 
     @PostMapping("/{collectionId}")
     public @ResponseBody Link createLink(@PathVariable(value = "collectionId") Long collectionId, @RequestBody Link link) {
-        Optional<Collection> optionalCollection = collectionRepository.findById(collectionId);
+        Optional<LinksCollection> optionalCollection = linksCollectionRepository.findById(collectionId);
         if (optionalCollection.isPresent()) {
-            Collection collection = optionalCollection.get();
-            link.setCollection(collection);
+            LinksCollection linksCollection = optionalCollection.get();
+            link.setLinksCollection(linksCollection);
             return linkRepository.save(link);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Collection non trouvée");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "LinksCollection non trouvée");
         }
     }
 
