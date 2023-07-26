@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CollectionRepository extends JpaRepository<LinksCollection, Long> {
+public interface LinksCollectionRepository extends JpaRepository<LinksCollection, Long> {
     List<LinksCollection> findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String title, String description);
 }
