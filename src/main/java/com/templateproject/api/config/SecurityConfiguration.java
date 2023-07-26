@@ -56,7 +56,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/swagger-ui.html").permitAll()
                         .requestMatchers("/v3/**").permitAll()
                         .requestMatchers("/contact/**").permitAll()
-                        .requestMatchers("/rssFeeds/**", "/collections/**", "/links/**","/todo-lists/**","/lists/**" ).permitAll()
+                        .requestMatchers("/rssFeeds/**", "/collections/**", "/links/**","/todo-lists/**","/lists/**", "/dashboard/**" ).permitAll()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .build();

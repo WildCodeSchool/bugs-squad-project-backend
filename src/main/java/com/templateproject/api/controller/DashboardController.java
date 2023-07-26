@@ -19,12 +19,12 @@ public class DashboardController {
         this.dashboardRepository = dashboardRepository;
     }
 
-    @GetMapping("")
+    @GetMapping("/")
     public @ResponseBody List<Dashboard> getDashboard() {
         return dashboardRepository.findAll();
     }
 
-    @PostMapping("")
+    @PostMapping("/")
     public @ResponseBody Dashboard createDashboard(@RequestBody Dashboard dashboard) {
         return dashboardRepository.save(dashboard);
     }
