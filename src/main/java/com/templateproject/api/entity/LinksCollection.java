@@ -8,7 +8,8 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Collection {
+@Table(name = "collection")
+public class LinksCollection {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
